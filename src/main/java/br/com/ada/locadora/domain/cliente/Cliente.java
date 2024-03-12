@@ -32,14 +32,14 @@ public class Cliente {
     }
 
     public void alterarNome(String nome) {
-        if (nome == null || nome.isEmpty()){
+        if (nome == null || nome.isEmpty()) {
             throw new IllegalArgumentException("Nome não pode ser nulo ou vazio");
         }
         this.nome = nome;
     }
 
     public void alterarEmail(String email) {
-        if (email == null || email.isEmpty()){
+        if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("Nome não pode ser nulo ou vazio");
         }
         this.email = email;

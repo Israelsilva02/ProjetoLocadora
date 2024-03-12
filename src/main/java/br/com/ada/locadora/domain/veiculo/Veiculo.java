@@ -14,6 +14,6 @@ public class Veiculo {
 
     public void reservar(){
         this.disponibilidade = disponibilidade;
-        this.
+
     }
 }
