@@ -5,13 +5,12 @@ import java.util.List;
 public interface VeiculoGateway {
     public void cadastrar(Veiculo veiculo);
 
-    public void atualizar(Integer id, Veiculo veiculo);
+    public void atualizar(String placa, Veiculo veiculo);
 
-    Veiculo buscarPorId(Integer id);
+    Veiculo buscarPorPlaca(String placa);
 
-    Veiculo buscarPorDescricao(String descricao);
 
     List<Veiculo> listarVeiculos();
 
-    Veiculo buscarPorMarca();
+
 }

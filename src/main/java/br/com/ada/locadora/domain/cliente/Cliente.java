@@ -2,6 +2,8 @@ package br.com.ada.locadora.domain.cliente;
 
 import br.com.ada.locadora.Identificador;
 
+import java.util.Random;
+
 public class Cliente {
     private final Identificador id;
     private TipoPessoa tipo;
@@ -10,10 +12,10 @@ public class Cliente {
 
 
     public Cliente(Identificador id, String nome, String email) {
+        //  this.id = String.valueOf(new Random().nextInt(100));
         this.id = id;
         this.nome = nome;
         this.email = email;
-        this.tipo = id.nome();
         validar();
     }
 
@@ -36,6 +38,7 @@ public class Cliente {
             throw new IllegalArgumentException("Nome não pode ser nulo ou vazio");
         }
         this.nome = nome;
+
     }
 
     public void alterarEmail(String email) {
@@ -61,10 +64,5 @@ public class Cliente {
         return email;
     }
 
-    @Override
-    public String toString() {
-        return "Cliente{" +
-                "nome='" + nome + '\'' +
-                '}';
-    }
+
 }

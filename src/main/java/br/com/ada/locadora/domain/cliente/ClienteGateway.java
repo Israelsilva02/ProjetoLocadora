@@ -9,5 +9,5 @@ public interface ClienteGateway {
 
     Cliente buscarPorId(String id);
 
-    List<Cliente> listarRTodos();
+    List<Cliente> listarTodos();
 }
