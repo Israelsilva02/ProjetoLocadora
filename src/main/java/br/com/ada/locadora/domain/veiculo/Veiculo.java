@@ -19,33 +19,44 @@ public class Veiculo {
         }else {
             System.out.println("Veiculo não disponivel!!");
         }
-
     }
     public void liberar(){
+
         this.disponivel = true;
     }
 
     public boolean consultarDisponibilidade() {
+
         return disponivel;
     }
 
     public String getPlaca() {
+
         return placa;
     }
 
     public String getMarca() {
+
         return marca;
     }
 
+    public TipoVeiculo getTipoVeiculo() {
+
+        return tipoVeiculo;
+    }
+
     public void alterarPlaca(String placa) {
+
         this.placa = placa;
     }
 
     public void alterarMarca(String marca) {
+
         this.marca = marca;
     }
 
     public void alterarTipoVeiculo(TipoVeiculo tipoVeiculo) {
+
         this.tipoVeiculo = tipoVeiculo;
     }
 }

@@ -7,9 +7,11 @@ import br.com.ada.locadora.domain.cliente.ClienteGateway;
 import java.util.List;
 
 public class ClienteServico {
+
     private ClienteGateway clienteGateway;
 
     public ClienteServico(ClienteGateway clienteGateway) {
+
         this.clienteGateway = clienteGateway;
     }
     public void incluir(Identificador id,
@@ -43,6 +45,7 @@ public class ClienteServico {
     }
 
     public List<Cliente> listarClientes(){
+
         return clienteGateway.listarTodos();
     }
 }

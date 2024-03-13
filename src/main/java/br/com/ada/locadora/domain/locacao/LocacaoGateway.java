@@ -6,11 +6,12 @@ import br.com.ada.locadora.domain.veiculo.Veiculo;
 import java.util.List;
 
 public interface LocacaoGateway {
-    public void alugar(Cliente cliente,Veiculo veiculo);
+    public void inserir(Locacao locacao);
 
-    public void devolver(Cliente cliente, Veiculo veiculo);
+    public void atualizar(Integer codigoLocacao, Locacao locacao);
 
-    List<Veiculo> listarVeiculosAlugados();
+    public Locacao buscarLocacaoCodigo(Integer codigoLocacao);
 
+    List<Locacao> listarLocacoes();
 
 }

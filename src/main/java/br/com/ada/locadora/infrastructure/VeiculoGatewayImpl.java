@@ -28,12 +28,10 @@ public class VeiculoGatewayImpl implements VeiculoGateway {
         for (Veiculo veiculo : veiculos) {
 
             if (veiculo.getPlaca().equals(placa)) {
-
+                return veiculo;
             }
-
         }
-
-        throw new IllegalArgumentException("Cliente não encontrado");
+        throw new IllegalArgumentException("Veiculo não encontrado");
     }
 
 

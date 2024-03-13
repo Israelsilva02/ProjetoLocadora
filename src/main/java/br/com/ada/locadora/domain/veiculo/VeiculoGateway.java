@@ -9,8 +9,6 @@ public interface VeiculoGateway {
 
     Veiculo buscarPorPlaca(String placa);
 
-
     List<Veiculo> listarVeiculos();
-
 
 }
