@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 
 public class Locacao extends Identificador<Integer> {
     private Identificador locacaoId;
+    private Identificador clienteId;
+    private Identificador veiculoId;
     private Cliente cliente;
     private Veiculo veiculo;
     private LocalDateTime dataHoraSaida;
@@ -19,11 +21,13 @@ public class Locacao extends Identificador<Integer> {
     private Integer quantidadeDias;
 
 
-    public Locacao(Identificador locacaoId, Cliente cliente, Veiculo veiculo,
-                   LocalDateTime dataHoraSaida, LocalDateTime dataHoraRetorno,
-                   String localDevolucao, BigDecimal diariaPreco,
-                   Integer quantidadeDias) {
+    public Locacao(Identificador locacaoId, Identificador clienteId, Identificador veiculoId,
+                   Cliente cliente, Veiculo veiculo, LocalDateTime dataHoraSaida,
+                   LocalDateTime dataHoraRetorno, String localDevolucao,
+                   BigDecimal diariaPreco, Integer quantidadeDias) {
         this.locacaoId = locacaoId;
+        this.clienteId = clienteId;
+        this.veiculoId = veiculoId;
         this.cliente = cliente;
         this.veiculo = veiculo;
         this.dataHoraSaida = dataHoraSaida;
@@ -57,6 +61,10 @@ public class Locacao extends Identificador<Integer> {
 
     public Identificador getLocacaoId() {
         return locacaoId;
+    }
+
+    public Identificador getClienteId() {
+        return clienteId;
     }
 
     public Cliente getCliente() {

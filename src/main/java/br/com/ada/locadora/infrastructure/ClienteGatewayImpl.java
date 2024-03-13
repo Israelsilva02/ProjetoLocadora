@@ -1,5 +1,6 @@
 package br.com.ada.locadora.infrastructure;
 
+import br.com.ada.locadora.Identificador;
 import br.com.ada.locadora.domain.cliente.Cliente;
 import br.com.ada.locadora.domain.cliente.ClienteGateway;
 
@@ -16,14 +17,14 @@ public class ClienteGatewayImpl implements ClienteGateway {
     }
 
     @Override
-    public void atualizar(String id, Cliente cliente) {
-        Cliente clienteRemover = buscarPorId(id);
+    public void atualizar(Identificador id, Cliente cliente) {
+        Cliente clienteRemover = buscarClientePorId(id);
         clientes.remove(clienteRemover);
         clientes.add(cliente);
     }
 
     @Override
-    public Cliente buscarPorId(String id) {
+    public Cliente buscarClientePorId(Identificador id) {
         for (Cliente cliente : clientes) {
 
             if (cliente.getId().equals(id)) {

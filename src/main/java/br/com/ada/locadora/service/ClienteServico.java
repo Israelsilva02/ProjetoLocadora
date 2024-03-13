@@ -21,12 +21,11 @@ public class ClienteServico {
         clienteGateway.cadastrar(cliente);
 
     }
-    public void alterar(String id,
+    public void alterar(Identificador id,
                         String nome,
-                        String email,
-                        String endereco){
+                        String email){
 
-        Cliente cliente = clienteGateway.buscarPorId(id);
+        Cliente cliente = clienteGateway.buscarClientePorId(id);
 
         cliente.alterarNome(nome);
         cliente.alterarEmail(email);
@@ -36,9 +35,9 @@ public class ClienteServico {
 
     }
 
-    public Cliente localizarCliente(String id){
+    public Cliente localizarCliente(Identificador id){
 
-        Cliente cliente = clienteGateway.buscarPorId(id);
+        Cliente cliente = clienteGateway.buscarClientePorId(id);
 
         return cliente;
     }

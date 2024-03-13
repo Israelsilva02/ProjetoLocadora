@@ -22,7 +22,8 @@ public class LocacaoGatewayImpl implements LocacaoGateway {
 
     @Override
     public void devolver(Cliente cliente, Veiculo veiculo) {
-
+        veiculo.liberar();
+        System.out.println("Veiculo liberado!!");
     }
 
     @Override
