@@ -16,28 +16,22 @@ public class LocacaoServico {
     private LocacaoGateway locacaoGateway;
 
     public LocacaoServico(LocacaoGateway locacaoGateway) {
+
         this.locacaoGateway = locacaoGateway;
     }
 
-    public void incluirLocacao(Identificador locacaoId, Identificador clienteId, Cliente cliente,
-                               Veiculo veiculo, LocalDateTime dataHoraSaida,Integer quantidadeDias) {
+    public void incluirLocacao(Locacao locacao) {
 
-      //  Locacao locacao = new Locacao(locacaoId, clienteId, cliente, veiculo, dataHoraSaida,quantidadeDias);
-
-        locacaoGateway.alugar(cliente, veiculo);
+        locacaoGateway.inserir(locacao);
 
     }
 
-    public void devolverVeiculo(Cliente cliente, Veiculo veiculo) {
+    public void atualizarLocacao(Integer codigoLocacao, Locacao locacao) {
+        locacaoGateway.atualizar(codigoLocacao, locacao);
+    }
 
+    {
 
-
-
-
-
-
-
-
-
+//fazer metodo buscarLocacao
     }
 }

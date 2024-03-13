@@ -12,7 +12,6 @@ public class Cliente {
 
 
     public Cliente(Identificador id, String nome, String email) {
-        //  this.id = String.valueOf(new Random().nextInt(100));
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -49,20 +48,22 @@ public class Cliente {
     }
 
     public Identificador getId() {
+
         return id;
     }
 
-    public TipoPessoa getTipo() {
-        return tipo;
-    }
+        public String getNome() {
 
-    public String getNome() {
         return nome;
     }
 
     public String getEmail() {
+
         return email;
     }
 
+    public TipoPessoa getTipo() {
 
+        return tipo;
+    }
 }

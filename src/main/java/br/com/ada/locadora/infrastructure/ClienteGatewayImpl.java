@@ -10,7 +10,6 @@ import java.util.List;
 public class ClienteGatewayImpl implements ClienteGateway {
     private List<Cliente> clientes = new ArrayList<>();
 
-
     @Override
     public void cadastrar(Cliente cliente) {
         clientes.add(cliente);
@@ -36,6 +35,7 @@ public class ClienteGatewayImpl implements ClienteGateway {
 
     @Override
     public List<Cliente> listarTodos() {
+
         return clientes;
     }
 }
