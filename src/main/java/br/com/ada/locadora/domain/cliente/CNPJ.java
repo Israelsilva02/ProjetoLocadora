@@ -15,6 +15,7 @@ public class CNPJ extends Identificador<String> {
 
     @Override
     public String getValor() {
+
         return numero;
     }
 }
