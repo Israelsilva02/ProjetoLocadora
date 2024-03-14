@@ -24,12 +24,14 @@ public class ClienteGatewayImpl implements ClienteGateway {
 
     @Override
     public Cliente buscarClientePorId(Identificador id) {
-        for (Cliente cliente : clientes) {
 
-            if (cliente.getId().equals(id)) {
+        for(Cliente cliente: clientes){
+
+            if (cliente.getId().equals(id)){
                 return cliente;
             }
         }
+
         throw new IllegalArgumentException("Cliente não encontrado");
     }
 
