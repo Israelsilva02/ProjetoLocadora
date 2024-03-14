@@ -1,0 +1,120 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Locadora locadora = new Locadora();
+
+        while (true) {
+            System.out.println("**Menu Principal**\n");
+            System.out.println("1. Veículos");
+            System.out.println("2. Clientes");
+            System.out.println("3. Locação");
+            System.out.println("4. Sair\n");
+
+            System.out.print("Escolha uma opção: ");
+            int opcaoPrincipal = scanner.nextInt();
+
+            switch (opcaoPrincipal) {
+                case 1:
+                    menuVeiculos(scanner, locadora);
+                    break;
+                case 2:
+                    menuClientes(scanner, locadora);
+                    break;
+                case 3:
+                    menuLocacao(scanner, locadora);
+                    break;
+                case 4:
+                    System.out.println("Saindo...");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Opção inválida. Por favor, escolha uma opção válida.\n");
+            }
+        }
+    }
+
+    public static void menuVeiculos(Scanner scanner, Locadora locadora) {
+        while (true) {
+            System.out.println("\n**Menu Veículos**\n");
+            System.out.println("1. Cadastrar Veículo");
+            System.out.println("2. Alterar Veículo");
+            System.out.println("3. Buscar Veículo");
+            System.out.println("4. Voltar ao Menu Principal\n");
+
+            System.out.print("Escolha uma opção: ");
+            int opcaoVeiculo = scanner.nextInt();
+
+            switch (opcaoVeiculo) {
+                case 1:
+                    locadora.cadastrarVeiculo(scanner);
+                    break;
+                case 2:
+                    locadora.alterarVeiculo(scanner);
+                    break;
+                case 3:
+                    locadora.buscarVeiculo(scanner);
+                    break;
+                case 4:
+                    return;
+                default:
+                    System.out.println("Opção inválida. Por favor, escolha uma opção válida.\n");
+            }
+        }
+    }
+
+    public static void menuClientes(Scanner scanner, Locadora locadora) {
+        while (true) {
+            System.out.println("\n**Menu Clientes**\n");
+            System.out.println("1. Cadastrar Cliente");
+            System.out.println("2. Alterar Cliente");
+            System.out.println("3. Lista de Clientes");
+            System.out.println("4. Voltar ao Menu Principal\n");
+
+            System.out.print("Escolha uma opção: ");
+            int opcaoCliente = scanner.nextInt();
+
+            switch (opcaoCliente) {
+                case 1:
+                    locadora.cadastrarCliente(scanner);
+                    break;
+                case 2:
+                    locadora.alterarCliente(scanner);
+                    break;
+                case 3:
+                    locadora.listarClientes();
+                    break;
+                case 4:
+                    return;
+                default:
+                    System.out.println("Opção inválida. Por favor, escolha uma opção válida.\n");
+            }
+        }
+    }
+
+    public static void menuLocacao(Scanner scanner, Locadora locadora) {
+        while (true) {
+            System.out.println("\n**Menu Locação**\n");
+            System.out.println("1. Alugar Veículo");
+            System.out.println("2. Devolver Veículo");
+            System.out.println("3. Voltar ao Menu Principal\n");
+
+            System.out.print("Escolha uma opção: ");
+            int opcaoLocacao = scanner.nextInt();
+
+            switch (opcaoLocacao) {
+                case 1:
+                    locadora.alugarVeiculo(scanner);
+                    break;
+                case 2:
+                    locadora.devolverVeiculo(scanner);
+                    break;
+                case 3:
+                    return;
+                default:
+                    System.out.println("Opção inválida. Por favor, escolha uma opção válida.\n");
+            }
+        }
+    }
+}
