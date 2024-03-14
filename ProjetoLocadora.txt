@@ -118,3 +118,39 @@ public class Main {
         }
     }
 }
+
+public static void exibirMenuVeiculos() {
+    int opcao;
+    do {
+        System.out.println("********************************************");
+        System.out.println("***************** Veículos *****************");
+        System.out.println("********************************************");
+        System.out.println("1.1 Cadastrar Veículo");
+        System.out.println("1.2 Alterar Veículo");
+        System.out.println("1.3 Buscar todos Veículos");
+        System.out.println("1.4 Lista de Veículos");
+        System.out.println("1.5 Voltar");
+        System.out.print("Escolha a opção: ");
+        opcao = scanner.nextInt();
+        switch (opcao) {
+            case 1:
+                cadastrarVeiculo();
+                break;
+            case 2:
+                alterarVeiculo();
+                break;
+            case 3:
+                buscarTodosVeiculos();
+                break;
+            case 4:
+                listarVeiculos();
+                break;
+            case 5:
+                System.out.println("Voltando ao menu principal...");
+                break;
+            default:
+                System.out.println("Opção inválida!");
+        }
+    } while (opcao != 5);
+}
+
