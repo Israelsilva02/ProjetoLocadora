@@ -1,156 +1,34 @@
-import java.util.Scanner;
+private static void alterarCliente(Scanner scanner, ClienteServico clienteServico) {
+    System.out.println("Informe o CPF ou CNPJ do cliente que deseja alterar:");
+    String cpfCnpjAlterar = scanner.next();
 
-public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Locadora locadora = new Locadora();
-
-        while (true) {
-            System.out.println("**Menu Principal**\n");
-            System.out.println("1. Veículos");
-            System.out.println("2. Clientes");
-            System.out.println("3. Locação");
-            System.out.println("4. Sair\n");
-
-            System.out.print("Escolha uma opção: ");
-            int opcaoPrincipal = scanner.nextInt();
-
-            switch (opcaoPrincipal) {
-                case 1:
-                    menuVeiculos(scanner, locadora);
-                    break;
-                case 2:
-                    menuClientes(scanner, locadora);
-                    break;
-                case 3:
-                    menuLocacao(scanner, locadora);
-                    break;
-                case 4:
-                    System.out.println("Saindo...");
-                    System.exit(0);
-                    break;
-                default:
-                    System.out.println("Opção inválida. Por favor, escolha uma opção válida.\n");
-            }
+    // Verificar se o cliente está cadastrado
+    Identificador id = null;
+    try {
+        if (cpfCnpjAlterar.length() == 11) {
+            id = new CPF(cpfCnpjAlterar);
+        } else if (cpfCnpjAlterar.length() == 14) {
+            id = new CNPJ(cpfCnpjAlterar);
+        } else {
+            throw new IllegalArgumentException("CPF ou CNPJ inválido!");
         }
+        Cliente clienteExistente = clienteServico.localizarCliente(id);
+        if (clienteExistente == null) {
+            System.out.println("Cliente não encontrado. Certifique-se de que o CPF/CNPJ está correto.");
+            return;
+        }
+    } catch (IllegalArgumentException e) {
+        System.out.println(e.getMessage());
+        return;
     }
 
-    public static void menuVeiculos(Scanner scanner, Locadora locadora) {
-        while (true) {
-            System.out.println("\n**Menu Veículos**\n");
-            System.out.println("1. Cadastrar Veículo");
-            System.out.println("2. Alterar Veículo");
-            System.out.println("3. Buscar Veículo");
-            System.out.println("4. Voltar ao Menu Principal\n");
+    // Se o cliente está cadastrado, solicitar novos dados
+    System.out.println("Informe o novo nome do cliente:");
+    String nomeAlterar = scanner.next();
+    System.out.println("Informe o novo email do cliente:");
+    String emailAlterar = scanner.next();
 
-            System.out.print("Escolha uma opção: ");
-            int opcaoVeiculo = scanner.nextInt();
-
-            switch (opcaoVeiculo) {
-                case 1:
-                    locadora.cadastrarVeiculo(scanner);
-                    break;
-                case 2:
-                    locadora.alterarVeiculo(scanner);
-                    break;
-                case 3:
-                    locadora.buscarVeiculo(scanner);
-                    break;
-                case 4:
-                    return;
-                default:
-                    System.out.println("Opção inválida. Por favor, escolha uma opção válida.\n");
-            }
-        }
-    }
-
-    public static void menuClientes(Scanner scanner, Locadora locadora) {
-        while (true) {
-            System.out.println("\n**Menu Clientes**\n");
-            System.out.println("1. Cadastrar Cliente");
-            System.out.println("2. Alterar Cliente");
-            System.out.println("3. Lista de Clientes");
-            System.out.println("4. Voltar ao Menu Principal\n");
-
-            System.out.print("Escolha uma opção: ");
-            int opcaoCliente = scanner.nextInt();
-
-            switch (opcaoCliente) {
-                case 1:
-                    locadora.cadastrarCliente(scanner);
-                    break;
-                case 2:
-                    locadora.alterarCliente(scanner);
-                    break;
-                case 3:
-                    locadora.listarClientes();
-                    break;
-                case 4:
-                    return;
-                default:
-                    System.out.println("Opção inválida. Por favor, escolha uma opção válida.\n");
-            }
-        }
-    }
-
-    public static void menuLocacao(Scanner scanner, Locadora locadora) {
-        while (true) {
-            System.out.println("\n**Menu Locação**\n");
-            System.out.println("1. Alugar Veículo");
-            System.out.println("2. Devolver Veículo");
-            System.out.println("3. Voltar ao Menu Principal\n");
-
-            System.out.print("Escolha uma opção: ");
-            int opcaoLocacao = scanner.nextInt();
-
-            switch (opcaoLocacao) {
-                case 1:
-                    locadora.alugarVeiculo(scanner);
-                    break;
-                case 2:
-                    locadora.devolverVeiculo(scanner);
-                    break;
-                case 3:
-                    return;
-                default:
-                    System.out.println("Opção inválida. Por favor, escolha uma opção válida.\n");
-            }
-        }
-    }
+    // Atualizar o cliente
+    clienteServico.alterar(id, nomeAlterar, emailAlterar);
+    System.out.println("Cliente alterado com sucesso!");
 }
-
-public static void exibirMenuVeiculos() {
-    int opcao;
-    do {
-        System.out.println("********************************************");
-        System.out.println("***************** Veículos *****************");
-        System.out.println("********************************************");
-        System.out.println("1.1 Cadastrar Veículo");
-        System.out.println("1.2 Alterar Veículo");
-        System.out.println("1.3 Buscar todos Veículos");
-        System.out.println("1.4 Lista de Veículos");
-        System.out.println("1.5 Voltar");
-        System.out.print("Escolha a opção: ");
-        opcao = scanner.nextInt();
-        switch (opcao) {
-            case 1:
-                cadastrarVeiculo();
-                break;
-            case 2:
-                alterarVeiculo();
-                break;
-            case 3:
-                buscarTodosVeiculos();
-                break;
-            case 4:
-                listarVeiculos();
-                break;
-            case 5:
-                System.out.println("Voltando ao menu principal...");
-                break;
-            default:
-                System.out.println("Opção inválida!");
-        }
-    } while (opcao != 5);
-}
-
