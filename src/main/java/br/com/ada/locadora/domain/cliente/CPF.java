@@ -15,6 +15,7 @@ public class CPF extends Identificador<String> {
 
     @Override
     public String getValor() {
+
         return numero;
     }
 }

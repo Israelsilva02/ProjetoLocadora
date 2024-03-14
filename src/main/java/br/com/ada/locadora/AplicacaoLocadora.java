@@ -1,9 +1,6 @@
 package br.com.ada.locadora;
 
-import br.com.ada.locadora.domain.cliente.CPF;
-import br.com.ada.locadora.domain.cliente.Cliente;
-import br.com.ada.locadora.domain.cliente.ClienteGateway;
-import br.com.ada.locadora.domain.cliente.TipoPessoa;
+import br.com.ada.locadora.domain.cliente.*;
 import br.com.ada.locadora.domain.locacao.Locacao;
 import br.com.ada.locadora.domain.locacao.LocacaoID;
 import br.com.ada.locadora.domain.veiculo.TipoVeiculo;
@@ -14,6 +11,7 @@ import br.com.ada.locadora.infrastructure.VeiculoGatewayImpl;
 import br.com.ada.locadora.service.ClienteServico;
 import br.com.ada.locadora.service.VeiculoServico;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class AplicacaoLocadora {
@@ -26,24 +24,18 @@ public class AplicacaoLocadora {
 
     public static void main(String[] args) {
 
-        CPF cpf=new CPF("12345678911");
-        Cliente cliente=new Cliente(cpf,"Jhenny","jhen@gmail.com");
+//        CPF cpf=new CPF("12345678911");
+//        Cliente cliente=new Cliente(cpf,"Jhenny","jhen@gmail.com");
+//
+//        Veiculo veiculo=new Veiculo("123abc","marca1", TipoVeiculo.GRANDE);
+//
+//        LocacaoID id=new LocacaoID();
+//        Locacao locacao=new Locacao(id,"rua a",10);
+//
+//        locacao.realizarLocacao(cliente,veiculo);
+//        locacao.devolverVeiculo();
+//        locacao.calcularLocacao();
 
-        Veiculo veiculo=new Veiculo("123abc","marca1", TipoVeiculo.GRANDE);
-
-        LocacaoID id=new LocacaoID();
-        Locacao locacao=new Locacao(id,"rua a",10);
-
-        locacao.realizarLocacao(cliente,veiculo);
-        locacao.devolverVeiculo();
-        locacao.calcularLocacao();
-
-
-        ClienteGateway clienteGateway = new ClienteGatewayImpl();
-        ClienteServico clienteServico = new ClienteServico(clienteGateway);
-
-        VeiculoGateway veiculoGateway = new VeiculoGatewayImpl();
-        VeiculoServico veiculoServico = new VeiculoServico(veiculoGateway);
 
         exibirMenu(scanner);
     }
@@ -88,18 +80,24 @@ public class AplicacaoLocadora {
     }
 
     private static void exibirMenuCliente() {
-        System.out.println("********************************************");
-        System.out.println("1. Cadastrar Clientes");
-        System.out.println("2. Alterar Cliente");
-        System.out.println("0. Voltar ao menu");
-        int opcao2 = scanner.nextInt();
+        int opcao2 = 0;
         do {
+            System.out.println("********************************************");
+            System.out.println("1. Cadastrar Clientes");
+            System.out.println("2. Alterar Cliente");
+            System.out.println("3. Listar Clientes");
+            System.out.println("0. Voltar ao menu");
+            opcao2 = scanner.nextInt();
+
             switch (opcao2) {
                 case 1:
                     cadastrarCliente(scanner, clienteServico);
                     break;
                 case 2:
                     alterarCliente(scanner, clienteServico);
+                    break;
+                case 3:
+                   listarCliente(clienteServico);
                     break;
                 case 0:
                     return;
@@ -126,14 +124,16 @@ public class AplicacaoLocadora {
         TipoPessoa tipoPessoa = null;
         if (tipo.equalsIgnoreCase("PF")) {
             tipoPessoa = TipoPessoa.PF;
-            System.out.println("pf ok");
+            identificador = new CPF(cpfCnpj);
 
-        } else {
+        } else if (tipo.equalsIgnoreCase("PJ")){
             tipoPessoa = TipoPessoa.PJ;
-            System.out.println("pj ok");
+            identificador = new CNPJ(cpfCnpj);
+        }else{
+            throw new RuntimeException("Tipo de cliente inválido!");
         }
-        // clienteServico.incluir(identificador, nome, email);
-        System.out.println("Cliente cadastrado com sucesso");
+        clienteServico.incluir(identificador, nome, email, tipoPessoa);
+        System.out.println("Cliente cadastrado com sucesso com o codigo: ");
     }
 
     private static void alterarCliente(Scanner scanner, ClienteServico clienteServico) {
@@ -144,10 +144,23 @@ public class AplicacaoLocadora {
         System.out.println("Informe o nome do email");
         String emailAlterar = scanner.next();
 
-      //  clienteServico.alterar(cpfCnpjAlterar, nomeAlterar, emailAlterar);
+        //  clienteServico.alterar(cpfCnpjAlterar, nomeAlterar, emailAlterar);
         System.out.println("Cliente alterado com sucesso");
     }
 
+    private static void listarCliente(ClienteServico clienteServico) {
+        System.out.println("********************************************");
+        System.out.println("Listando todos os clientes");
+        List<Cliente> clientes = clienteServico.listarClientes();
+        for (Cliente cliente : clientes) {
+            System.out.println();
+            System.out.println("Tipo de Cliente: "+cliente.getTipo());
+            System.out.println("Identificador do Cliente: "+cliente.getId().toString());
+            System.out.println("Nome do Cliente: "+cliente.getNome());
+            System.out.println("Email do Cliente: "+cliente.getEmail());
+
+        }
+    }
     private static void exibirMenuVeiculo() {
         System.out.println("********************************************");
         System.out.println("1. Cadastrar Clientes");

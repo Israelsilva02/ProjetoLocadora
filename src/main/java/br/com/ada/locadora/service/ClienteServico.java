@@ -3,6 +3,7 @@ package br.com.ada.locadora.service;
 import br.com.ada.locadora.Identificador;
 import br.com.ada.locadora.domain.cliente.Cliente;
 import br.com.ada.locadora.domain.cliente.ClienteGateway;
+import br.com.ada.locadora.domain.cliente.TipoPessoa;
 
 import java.util.List;
 
@@ -16,9 +17,10 @@ public class ClienteServico {
     }
     public void incluir(Identificador id,
                         String nome,
-                        String email){
+                        String email,
+                        TipoPessoa tipo){
 
-        Cliente cliente = new Cliente(id, nome, email);
+        Cliente cliente = new Cliente(id, nome, email,tipo);
 
         clienteGateway.cadastrar(cliente);
 
