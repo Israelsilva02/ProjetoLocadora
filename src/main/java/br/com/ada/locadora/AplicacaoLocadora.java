@@ -119,7 +119,6 @@ public class AplicacaoLocadora {
         System.out.println("Informe o nome do email");
         String email = scanner.next();
 
-
         Identificador identificador;
         TipoPessoa tipoPessoa = null;
         if (tipo.equalsIgnoreCase("PF")) {
@@ -137,15 +136,39 @@ public class AplicacaoLocadora {
     }
 
     private static void alterarCliente(Scanner scanner, ClienteServico clienteServico) {
-        System.out.println("Informe o CPF ou CNPJ");
+
+        System.out.println("Informe o CPF ou CNPJ do cliente que deseja alterar:");
         String cpfCnpjAlterar = scanner.next();
-        System.out.println("Informe o nome do cliente");
+
+        // Verificar se o cliente está cadastrado
+        Identificador id = null;
+        try {
+            if (cpfCnpjAlterar.length() == 11) {
+                id = new CPF(cpfCnpjAlterar);
+            } else if (cpfCnpjAlterar.length() == 14) {
+                id = new CNPJ(cpfCnpjAlterar);
+            } else {
+                throw new IllegalArgumentException("CPF ou CNPJ inválido!");
+            }
+            Cliente clienteExistente = clienteServico.localizarCliente(id);
+            if (clienteExistente == null) {
+                System.out.println("Cliente não encontrado. Certifique-se de que o CPF/CNPJ está correto.");
+                return;
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+
+        // Se o cliente está cadastrado, solicitar novos dados
+        System.out.println("Informe o novo nome do cliente:");
         String nomeAlterar = scanner.next();
-        System.out.println("Informe o nome do email");
+        System.out.println("Informe o novo email do cliente:");
         String emailAlterar = scanner.next();
 
-        //  clienteServico.alterar(cpfCnpjAlterar, nomeAlterar, emailAlterar);
-        System.out.println("Cliente alterado com sucesso");
+        // Atualizar o cliente
+        clienteServico.alterar(id, nomeAlterar, emailAlterar);
+        System.out.println("Cliente alterado com sucesso!");
     }
 
     private static void listarCliente(ClienteServico clienteServico) {
@@ -155,7 +178,7 @@ public class AplicacaoLocadora {
         for (Cliente cliente : clientes) {
             System.out.println();
             System.out.println("Tipo de Cliente: "+cliente.getTipo());
-            System.out.println("Identificador do Cliente: "+cliente.getId().toString());
+           // System.out.println("Identificador do Cliente: "+cliente.getId().toString());
             System.out.println("Nome do Cliente: "+cliente.getNome());
             System.out.println("Email do Cliente: "+cliente.getEmail());
 
