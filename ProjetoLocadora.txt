@@ -1,49 +1,13 @@
-private static void realizarLocacao(Scanner scanner, ClienteServico clienteServico, VeiculoServico veiculoServico, LocacaoServico locacaoServico) {
-        System.out.println("Digite o CPF ou CNPJ do cliente: ");
-        String cpfCnpj = scanner.next();
-        Identificador id = null;
-        try {
-            if (cpfCnpj.length() == 11) {
-                id = new CPF(cpfCnpj);
-            } else if (cpfCnpj.length() == 14) {
-                id = new CNPJ(cpfCnpj);
-            } else {
-                throw new IllegalArgumentException("CPF ou CNPJ inválido!");
-            }
-            Cliente clienteEncontrado = clienteServico.localizarCliente(id);
-            if (clienteEncontrado == null) {
-                System.out.println("Cliente não encontrado. Certifique-se de que o CPF/CNPJ está correto.");
-                return;
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
+ public void devolverVeiculo() {
+        this.veiculo.liberar();
+        this.dataHoraRetorno = LocalDateTime.now();
 
-        System.out.println("Digite a placa do veículo: ");
-        String placa = scanner.next();
-        Veiculo veiculo = veiculoServico.localizarVeiculo(placa);
+    }
 
-        try {
-            Veiculo veiculoEncontrado = veiculoServico.localizarVeiculo(placa);
-            if (veiculoEncontrado != null) {
-                placa = veiculoEncontrado.getPlaca();
-            } else if (veiculoEncontrado == null) {
-                System.out.println("Veiculo não encontrado. Certifique-se de que a placa está correta.");
-                return;
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
+    public BigDecimal calcularLocacao(){
+        Duration duracao=Duration.between(dataHoraSaida,dataHoraRetorno);
+        long dias=duracao.toDays();
+        BigDecimal valorTotal=diariaPreco.multiply(new BigDecimal(dias));
 
-     //   locacaoServico.incluirLocacao(locacaoServico);
-        System.out.println("Locação realizada com sucesso!");
-
-        System.out.println("Digite o numero de dias que irá alugar: ");
-        int quantidadeDias= scanner.nextInt();
-        
-        
-        if ()
-        
+        return valorTotal;
     }
