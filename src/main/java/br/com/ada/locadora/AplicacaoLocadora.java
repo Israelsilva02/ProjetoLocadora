@@ -199,13 +199,15 @@ public class AplicacaoLocadora {
     }
 
     private static void exibirMenuVeiculo(Scanner scanner, VeiculoServico veiculoServico) {
-        System.out.println("********************************************");
-        System.out.println("1. Cadastrar Veiculo");
-        System.out.println("2. Atualizar Veiculo");
-        System.out.println("3. Listar Veiculo");
-        System.out.println("0. Voltar ao menu");
-        int opcao2 = scanner.nextInt();
+        int opcao2;
         do {
+            System.out.println("********************************************");
+            System.out.println("1. Cadastrar Veículo");
+            System.out.println("2. Atualizar Veículo");
+            System.out.println("3. Listar Veículos");
+            System.out.println("4. Buscar Veículo por Placa");
+            System.out.println("0. Voltar ao menu");
+            opcao2 = scanner.nextInt();
             switch (opcao2) {
                 case 1:
                     cadastrarVeiculo(scanner, veiculoServico);
@@ -225,81 +227,98 @@ public class AplicacaoLocadora {
                 default:
                     System.out.println("Opção inválida!");
             }
-        } while (true);
+        } while (opcao2 != 0);
     }
 
 
     private static void cadastrarVeiculo(Scanner scanner, VeiculoServico veiculoServico) {
-        System.out.println("Digite a placa do Veiculo: ");
+        System.out.println("Digite a placa do Veículo: ");
         String placa = scanner.next();
-        System.out.println("Digite a marca do Veiculo: ");
+        System.out.println("Digite a marca do Veículo: ");
         String marca = scanner.next();
-        System.out.println("Digite o tipo do Veiculo: ");
-        TipoVeiculo tipoVeiculo = null;
 
-        if (tipoVeiculo.equals("PEQUENO")) {
-            tipoVeiculo = TipoVeiculo.PEQUENO;
+        // Solicita ao usuário que selecione o tipo de veículo digitando um número
+        System.out.println("Selecione o tipo do Veículo:");
+        System.out.println("1. PEQUENO");
+        System.out.println("2. MÉDIO");
+        System.out.println("3. GRANDE");
+        int opcaoTipoVeiculo = scanner.nextInt();
 
-        } else if (tipoVeiculo.equals("MEDIO")) {
-            tipoVeiculo = TipoVeiculo.MEDIO;
-
-        } else if (tipoVeiculo.equals("GRANDE")) {
-            tipoVeiculo = TipoVeiculo.GRANDE;
-
-        } else {
-            throw new RuntimeException("Tipo de veiculo inválido!");
+        // Converte a opção de tipo de veículo em um enum TipoVeiculo correspondente
+        TipoVeiculo tipoVeiculo;
+        switch (opcaoTipoVeiculo) {
+            case 1:
+                tipoVeiculo = TipoVeiculo.PEQUENO;
+                break;
+            case 2:
+                tipoVeiculo = TipoVeiculo.MEDIO;
+                break;
+            case 3:
+                tipoVeiculo = TipoVeiculo.GRANDE;
+                break;
+            default:
+                throw new IllegalArgumentException("Opção de tipo de veículo inválida!");
         }
+
         veiculoServico.incluir(placa, marca, tipoVeiculo);
-        System.out.println("Veiculo cadastrado com sucesso!");
+        System.out.println("Veículo cadastrado com sucesso!");
     }
 
     private static void atualizar(Scanner scanner, VeiculoServico veiculoServico) {
-        System.out.println("Informe a placa para alterar: ");
+        System.out.println("Informe a placa do Veículo para alterar: ");
         String placaAlterar = scanner.next();
-        try {
-            Veiculo veiculoExistente = veiculoServico.localizarVeiculo(placaAlterar);
-            if (veiculoExistente != null) {
-                placaAlterar = veiculoExistente.getPlaca();
-            } else if (veiculoExistente == null) {
-                System.out.println("Veiculo não encontrado. Certifique-se de que a placa está correta.");
-                return;
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return;
+
+        System.out.println("Digite a nova marca do Veículo: ");
+        String novaMarca = scanner.next();
+
+        System.out.println("Selecione o novo tipo do Veículo:");
+        System.out.println("1. PEQUENO");
+        System.out.println("2. MÉDIO");
+        System.out.println("3. GRANDE");
+        int opcaoTipoVeiculo = scanner.nextInt();
+
+        TipoVeiculo novoTipoVeiculo;
+        switch (opcaoTipoVeiculo) {
+            case 1:
+                novoTipoVeiculo = TipoVeiculo.PEQUENO;
+                break;
+            case 2:
+                novoTipoVeiculo = TipoVeiculo.MEDIO;
+                break;
+            case 3:
+                novoTipoVeiculo = TipoVeiculo.GRANDE;
+                break;
+            default:
+                throw new IllegalArgumentException("Opção de tipo de veículo inválida!");
         }
+
+
+        veiculoServico.alterar(placaAlterar,novaMarca, novoTipoVeiculo);
+        System.out.println("Veículo atualizado com sucesso!");
     }
 
     private static void listarVeiculos(Scanner scanner, VeiculoServico veiculoServico) {
         System.out.println("********************************************");
-        System.out.println("Listando todos os Veiculos");
-        System.out.println("********************************************");
+        System.out.println("Listando todos os Veículos");
         List<Veiculo> veiculos = veiculoServico.listarVeiculos();
         for (Veiculo veiculo : veiculos) {
-            System.out.println("Tipo de Veiculo: " + veiculo.getTipoVeiculo());
-            System.out.println("Marca do Veiculo: " + veiculo.getMarca());
-            System.out.println("Placa do Veiculo: " + veiculo.getPlaca());
+            System.out.println();
+            System.out.println("Tipo de Veículo: " + veiculo.getTipoVeiculo());
+            System.out.println("Marca do Veículo: " + veiculo.getMarca());
+            System.out.println("Placa do Veículo: " + veiculo.getPlaca());
         }
     }
-
     private static void buscarPorPlaca(Scanner scanner, VeiculoServico veiculoServico) {
         System.out.println("Digite a placa: ");
-        String placaCosultar = scanner.next();
-
-        List<Veiculo> veiculos = (List<Veiculo>) veiculoServico.localizarVeiculo(placaCosultar);
-        for (Veiculo veiculo : veiculos) {
-            if (veiculo.getPlaca().equals(placaCosultar)) {
-                System.out.println("Veiculo com a placa " + veiculo.getPlaca());
-                System.out.println("Veiculo da marca " + veiculo.getMarca());
-                System.out.println("Veiculo do tipo " + veiculo.getTipoVeiculo());
-
-                System.out.println("Veiculo econtrado");
-            } else {
-                throw new IllegalArgumentException("Veiculo não encontrado");
-            }
-
-
+        String placaConsultar = scanner.next();
+        Veiculo veiculo = veiculoServico.localizarVeiculo(placaConsultar);
+        if (veiculo != null) {
+            System.out.println("Veículo encontrado:");
+            System.out.println("Placa: " + veiculo.getPlaca());
+            System.out.println("Marca: " + veiculo.getMarca());
+            System.out.println("Tipo: " + veiculo.getTipoVeiculo());
+        } else {
+            System.out.println("Veículo não encontrado.");
         }
-
     }
 }
