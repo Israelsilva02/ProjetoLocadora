@@ -8,7 +8,7 @@ public class CNPJ extends Identificador<String> {
 
     public CNPJ(String valor) {
         if (valor == null || valor.length() != 14 || valor.isEmpty()) {
-            throw new IllegalArgumentException("CNPJ inválido");
+            throw new IllegalArgumentException("CNPJ deve ter 14 digitos");
         }
         this.numero = valor;
     }
