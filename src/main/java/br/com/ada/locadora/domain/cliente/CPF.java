@@ -10,7 +10,7 @@ public class CPF extends Identificador<String> {
         if (valor == null || valor.length() != 11 || valor.isEmpty()){
             throw new IllegalArgumentException("CPF deve ter 11 digitos");
         }
-        this.numero = numero;
+        this.numero = valor;
     }
 
     @Override

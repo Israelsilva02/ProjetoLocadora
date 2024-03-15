@@ -34,7 +34,7 @@ public class AplicacaoLocadora {
             System.out.println(Cores.TEXT_PURPLE_BOLD
                     + "********************************************");
             System.out.println("********************************************");
-            System.out.println("*************** Menu Principal ***************");
+            System.out.println("*************** Locadora ***************");
             System.out.println("********************************************");
             System.out.println("1. Clientes");
             System.out.println("2. Veículos");
@@ -96,29 +96,56 @@ public class AplicacaoLocadora {
 
     private static void cadastrarCliente(Scanner scanner, ClienteServico clienteServico) {
 
-        System.out.println("Informe o Tipo de Cliente PF ou PJ");
-        String tipo = scanner.next();
-        System.out.println("Informe o CPF ou CNPJ");
-        String cpfCnpj = scanner.next();
-        System.out.println("Informe o nome do cliente");
-        String nome = scanner.next();
-        System.out.println("Informe o nome do email");
-        String email = scanner.next();
+        try {
+            while (true) {
+                System.out.println("Informe o Tipo de Cliente PF ou PJ");
+                String tipo = scanner.next();
+                if (!tipo.equalsIgnoreCase("PF") && !tipo.equalsIgnoreCase("PJ")) {
+                    System.out.println("Tipo de cliente inválido! Por favor, informe PF ou PJ.");
+                    continue;
+                }
+                String cpfCnpj = "";
+                if (tipo.equalsIgnoreCase("PF")) {
+                    System.out.println("Informe o CPF");
+                    cpfCnpj = scanner.next();
+                } else {
+                    System.out.println("Informe o CNPJ");
+                    cpfCnpj = scanner.next();
+                }
 
-        Identificador identificador;
-        TipoPessoa tipoPessoa = null;
-        if (tipo.equalsIgnoreCase("PF")) {
-            tipoPessoa = TipoPessoa.PF;
-            identificador = new CPF(cpfCnpj);
+                Identificador identificador;
+                TipoPessoa tipoPessoa;
+                if (tipo.equalsIgnoreCase("PF")) {
+                    tipoPessoa = TipoPessoa.PF;
+                    try {
+                        identificador = new CPF(cpfCnpj);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                        continue;
+                    }
+                } else {
+                    tipoPessoa = TipoPessoa.PJ;
+                    try {
+                        identificador = new CNPJ(cpfCnpj);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                        continue;
+                    }
+                }
 
-        } else if (tipo.equalsIgnoreCase("PJ")) {
-            tipoPessoa = TipoPessoa.PJ;
-            identificador = new CNPJ(cpfCnpj);
-        } else {
-            throw new RuntimeException("Tipo de cliente inválido!");
+                System.out.println("Informe o nome do cliente");
+                String nome = scanner.next();
+                System.out.println("Informe o email do cliente");
+                String email = scanner.next();
+
+                clienteServico.incluir(identificador, nome, email, tipoPessoa);
+                System.out.println("Cliente cadastrado com sucesso com o identificador: " + identificador);
+                break;
+            }
+        } catch (Exception e) {
+            System.out.println("Ocorreu um erro ao cadastrar o cliente: " + e.getMessage());
+            e.printStackTrace();
         }
-        clienteServico.incluir(identificador, nome, email, tipoPessoa);
-        System.out.println("Cliente cadastrado com sucesso com o codigo: ");
     }
 
     private static void alterarCliente(Scanner scanner, ClienteServico clienteServico) {
@@ -160,14 +187,14 @@ public class AplicacaoLocadora {
     private static void listarCliente(ClienteServico clienteServico) {
         System.out.println("********************************************");
         System.out.println("Listando todos os clientes");
+        System.out.println("********************************************");
         List<Cliente> clientes = clienteServico.listarClientes();
         for (Cliente cliente : clientes) {
-            System.out.println();
             System.out.println("Tipo de Cliente: " + cliente.getTipo());
-            // System.out.println("Identificador do Cliente: "+cliente.getId().toString());
+            System.out.println("Identificador do Cliente: "+cliente.getId());
             System.out.println("Nome do Cliente: " + cliente.getNome());
             System.out.println("Email do Cliente: " + cliente.getEmail());
-
+            System.out.println("********************************************");
         }
     }
 
@@ -246,17 +273,13 @@ public class AplicacaoLocadora {
     private static void listarVeiculos(Scanner scanner, VeiculoServico veiculoServico) {
         System.out.println("********************************************");
         System.out.println("Listando todos os Veiculos");
+        System.out.println("********************************************");
         List<Veiculo> veiculos = veiculoServico.listarVeiculos();
         for (Veiculo veiculo : veiculos) {
-            System.out.println();
             System.out.println("Tipo de Veiculo: " + veiculo.getTipoVeiculo());
             System.out.println("Marca do Veiculo: " + veiculo.getMarca());
             System.out.println("Placa do Veiculo: " + veiculo.getPlaca());
-
-
         }
-
-
     }
 
     private static void buscarPorPlaca(Scanner scanner, VeiculoServico veiculoServico) {
