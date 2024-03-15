@@ -8,7 +8,7 @@ import java.util.List;
 public interface LocacaoGateway {
     public void inserir(Locacao locacao);
 
-    public void atualizar(Integer codigoLocacao, Locacao locacao);
+    public void devolverVeiculo(Integer codigoLocacao, Locacao locacao);
 
     public Locacao buscarLocacaoCodigo(Integer codigoLocacao);
 

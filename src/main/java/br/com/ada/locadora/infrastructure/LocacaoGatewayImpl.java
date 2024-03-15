@@ -17,7 +17,7 @@ public class LocacaoGatewayImpl implements LocacaoGateway {
     }
 
     @Override
-    public void atualizar(Integer codigoLocacao, Locacao locacao) {
+    public void devolverVeiculo(Integer codigoLocacao, Locacao locacao) {
         Locacao locacaoAlterar=buscarLocacaoCodigo(codigoLocacao);
         locacoes.remove(locacaoAlterar);
         locacoes.add(locacao);
