@@ -27,33 +27,6 @@ public class Locacao extends Identificador<Integer> {
         this.quantidadeDias = quantidadeDias;
     }
 
-    public void realizarLocacao(Cliente cliente, Veiculo veiculo) {
-        if (veiculo.consultarDisponibilidade()) {
-            veiculo.reservar();
-            this.dataHoraSaida = LocalDateTime.now();
-            this.cliente = cliente;
-            this.veiculo = veiculo;
-            this.diariaPreco=veiculo.getTipoVeiculo().getPrecoDiaria();
-            System.out.println("Veiculo alugado para: " + cliente.getNome());
-        } else {
-            System.out.println("Veiculo indisponivel !!");
-
-        }
-    }
-
-    public void devolverVeiculo() {
-        this.veiculo.liberar();
-        this.dataHoraRetorno = LocalDateTime.now();
-
-    }
-
-    public BigDecimal calcularLocacao(){
-        Duration duracao=Duration.between(dataHoraSaida,dataHoraRetorno);
-        long dias=duracao.toDays();
-        BigDecimal valorTotal=diariaPreco.multiply(new BigDecimal(dias));
-
-        return valorTotal;
-    }
 
     @Override
     public Integer getValor() {
