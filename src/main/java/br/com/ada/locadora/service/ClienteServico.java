@@ -25,18 +25,17 @@ public class ClienteServico {
         clienteGateway.cadastrar(cliente);
 
     }
-    public void alterar(Identificador id,
-                        String nome,
-                        String email){
-
+    public void alterar(Identificador id, String nome, String email) {
         Cliente cliente = clienteGateway.buscarClientePorId(id);
+
+        if (cliente == null) {
+            System.out.println("Cliente não encontrado. Certifique-se de que o ID está correto.");
+            return;
+        }
 
         cliente.alterarNome(nome);
         cliente.alterarEmail(email);
-
-
         clienteGateway.atualizar(id, cliente);
-
     }
 
     public Cliente localizarCliente(Identificador id){
