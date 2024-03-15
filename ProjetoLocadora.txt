@@ -35,11 +35,34 @@ private static void cadastrarVeiculo(Scanner scanner, VeiculoServico veiculoServ
     String placa = scanner.next();
     System.out.println("Digite a marca do Veículo: ");
     String marca = scanner.next();
-    System.out.println("Digite o tipo do Veículo (PEQUENO, MEDIO, GRANDE): ");
-    TipoVeiculo tipoVeiculo = TipoVeiculo.valueOf(scanner.next().toUpperCase());
+    
+    // Solicita ao usuário que selecione o tipo de veículo digitando um número
+    System.out.println("Selecione o tipo do Veículo:");
+    System.out.println("1. PEQUENO");
+    System.out.println("2. MÉDIO");
+    System.out.println("3. GRANDE");
+    int opcaoTipoVeiculo = scanner.nextInt();
+    
+    // Converte a opção de tipo de veículo em um enum TipoVeiculo correspondente
+    TipoVeiculo tipoVeiculo;
+    switch (opcaoTipoVeiculo) {
+        case 1:
+            tipoVeiculo = TipoVeiculo.PEQUENO;
+            break;
+        case 2:
+            tipoVeiculo = TipoVeiculo.MEDIO;
+            break;
+        case 3:
+            tipoVeiculo = TipoVeiculo.GRANDE;
+            break;
+        default:
+            throw new IllegalArgumentException("Opção de tipo de veículo inválida!");
+    }
+    
     veiculoServico.incluir(placa, marca, tipoVeiculo);
     System.out.println("Veículo cadastrado com sucesso!");
 }
+
 
 private static void atualizar(Scanner scanner, VeiculoServico veiculoServico) {
     System.out.println("Informe a placa do Veículo para alterar: ");
@@ -48,11 +71,35 @@ private static void atualizar(Scanner scanner, VeiculoServico veiculoServico) {
     String novaPlaca = scanner.next();
     System.out.println("Digite a nova marca do Veículo: ");
     String novaMarca = scanner.next();
-    System.out.println("Digite o novo tipo do Veículo (PEQUENO, MEDIO, GRANDE): ");
-    TipoVeiculo novoTipoVeiculo = TipoVeiculo.valueOf(scanner.next().toUpperCase());
+    
+    // Solicita ao usuário que selecione o tipo de veículo digitando um número
+    System.out.println("Selecione o novo tipo do Veículo:");
+    System.out.println("1. PEQUENO");
+    System.out.println("2. MÉDIO");
+    System.out.println("3. GRANDE");
+    int opcaoTipoVeiculo = scanner.nextInt();
+    
+    // Converte a opção de tipo de veículo em um enum TipoVeiculo correspondente
+    TipoVeiculo novoTipoVeiculo;
+    switch (opcaoTipoVeiculo) {
+        case 1:
+            novoTipoVeiculo = TipoVeiculo.PEQUENO;
+            break;
+        case 2:
+            novoTipoVeiculo = TipoVeiculo.MEDIO;
+            break;
+        case 3:
+            novoTipoVeiculo = TipoVeiculo.GRANDE;
+            break;
+        default:
+            throw new IllegalArgumentException("Opção de tipo de veículo inválida!");
+    }
+    
+    // Chama o método de serviço para atualizar o veículo com as novas informações
     veiculoServico.alterar(placaAlterar, novaPlaca, novaMarca, novoTipoVeiculo);
     System.out.println("Veículo atualizado com sucesso!");
 }
+
 
 private static void listarVeiculos(Scanner scanner, VeiculoServico veiculoServico) {
     System.out.println("********************************************");
