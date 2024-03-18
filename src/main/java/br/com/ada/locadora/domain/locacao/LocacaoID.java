@@ -13,7 +13,7 @@ public class LocacaoID extends Identificador<Integer> {
 
     @Override
     public Integer getValor() {
+        //retorna numero
         return numero;
     }
-
 }
