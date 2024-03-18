@@ -9,10 +9,12 @@ public enum TipoVeiculo {
     private BigDecimal precoDiaria;
 
     TipoVeiculo(BigDecimal precoDiaria) {
+
         this.precoDiaria=precoDiaria;
     }
 
     public BigDecimal getPrecoDiaria() {
+
         return precoDiaria;
     }
 }
