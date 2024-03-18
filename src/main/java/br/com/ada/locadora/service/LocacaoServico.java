@@ -29,17 +29,17 @@ public class LocacaoServico {
             LocalDateTime dataHoraSaida = LocalDateTime.now();
             BigDecimal diariaPreco = veiculo.getTipoVeiculo().getPrecoDiaria();
           //  Locacao locacao = new Locacao(cliente, veiculo, dataHoraSaida, diariaPreco);
-            locacaoGateway.inserir(locacao);
+          //  locacaoGateway.inserir(locacao);
             System.out.println("Veículo alugado para: " + cliente.getNome());
         } else {
             System.out.println("Veículo indisponível!!");
         }
     }
 
-    public void devolverVeiculo(Locacao locacao) {
-        locacao.getVeiculo().liberar();
-        locacao.setDataHoraRetorno(LocalDateTime.now());
-    }
+//    public void devolverVeiculo(Locacao locacao) {
+//        locacao.getVeiculo().liberar();
+//        locacao.setDataHoraRetorno(LocalDateTime.now());
+//    }
 
     public BigDecimal calcularLocacao(Locacao locacao) {
         Duration duracao = Duration.between(locacao.getDataHoraSaida(), locacao.getDataHoraRetorno());
