@@ -1,40 +1,40 @@
 package br.com.ada.locadora.infrastructure;
 
 import br.com.ada.locadora.Identificador;
-import br.com.ada.locadora.domain.cliente.Cliente;
-import br.com.ada.locadora.domain.cliente.ClienteGateway;
+import br.com.ada.locadora.dominio.cliente.Cliente;
+import br.com.ada.locadora.dominio.cliente.ClienteGateway;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClienteGatewayImpl implements ClienteGateway {
-    private List<Cliente> clientes = new ArrayList<>();
+    List<Cliente> clientes = new ArrayList<>();
 
     @Override
-    public void cadastrar(Cliente cliente) {
+    public void salvar(Cliente cliente) {
         clientes.add(cliente);
     }
 
     @Override
-    public void atualizar(Identificador id, Cliente cliente) {
-        Cliente clienteRemover = buscarClientePorId(id);
-        clientes.remove(clienteRemover);
+    public void atualizar(Cliente cliente) {
+        clientes.remove(cliente);
         clientes.add(cliente);
     }
 
     @Override
-    public Cliente buscarClientePorId(Identificador id) {
+    public Cliente buscarPorId(String id) {
+
         for (Cliente cliente : clientes) {
-            if (cliente.getId().equals(id)) {
+            if (id.equals(String.valueOf(cliente.id().valor()))) {
                 return cliente;
             }
         }
-        return null;
+
+        throw new RuntimeException("Cliente não encontrado");
     }
 
     @Override
-    public List<Cliente> listarTodos() {
-
+    public List<Cliente> buscarTodos() {
         return clientes;
     }
 }

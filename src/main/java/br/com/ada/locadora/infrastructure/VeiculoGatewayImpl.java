@@ -1,42 +1,39 @@
 package br.com.ada.locadora.infrastructure;
 
-import br.com.ada.locadora.domain.veiculo.Veiculo;
-import br.com.ada.locadora.domain.veiculo.VeiculoGateway;
+import br.com.ada.locadora.dominio.veiculo.Veiculo;
+import br.com.ada.locadora.dominio.veiculo.VeiculoGateway;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VeiculoGatewayImpl implements VeiculoGateway {
-    private List<Veiculo> veiculos = new ArrayList<>();
+    List<Veiculo> veiculos = new ArrayList<>();
 
     @Override
-    public void cadastrar(Veiculo veiculo) {
+    public void salvar(Veiculo veiculo) {
         veiculos.add(veiculo);
-
     }
 
     @Override
-    public void atualizar(String placa, Veiculo veiculo) {
-        Veiculo veiculoAtualizar = buscarPorPlaca(placa);
-        veiculos.remove(veiculoAtualizar);
-        veiculos.add(veiculoAtualizar);
-
+    public void atualizar(Veiculo veiculo) {
+        veiculos.remove(veiculo);
+        veiculos.add(veiculo);
     }
 
     @Override
-    public Veiculo buscarPorPlaca(String placa) {
+    public Veiculo buscarPorId(String id) {
+
         for (Veiculo veiculo : veiculos) {
-
-            if (veiculo.getPlaca().equals(placa)) {
+            if (veiculo.getPlaca().valor().equals(id)) {
                 return veiculo;
             }
         }
-        throw new IllegalArgumentException("Veiculo não encontrado");
+        throw new RuntimeException("Veiculo não encontrado");
     }
 
 
     @Override
-    public List<Veiculo> listarVeiculos() {
+    public List<Veiculo> buscarTodos() {
         return veiculos;
     }
 

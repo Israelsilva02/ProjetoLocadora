@@ -1,40 +1,39 @@
 package br.com.ada.locadora.infrastructure;
 
-import br.com.ada.locadora.domain.cliente.Cliente;
-import br.com.ada.locadora.domain.locacao.Locacao;
-import br.com.ada.locadora.domain.locacao.LocacaoGateway;
-import br.com.ada.locadora.domain.veiculo.Veiculo;
+import br.com.ada.locadora.dominio.locacao.Locacao;
+import br.com.ada.locadora.dominio.locacao.LocacaoGateway;
+import br.com.ada.locadora.dominio.veiculo.Veiculo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LocacaoGatewayImpl implements LocacaoGateway {
-    private List<Locacao> locacoes = new ArrayList<>();
+    List<Locacao> locacaos = new ArrayList<>();
 
     @Override
-    public void inserir(Locacao locacao) {
-        locacoes.add(locacao);
+    public void salvar(Locacao locacao) {
+        locacaos.add(locacao);
     }
 
     @Override
-    public void devolverVeiculo(Integer codigoLocacao, Locacao locacao) {
-        Locacao locacaoAlterar=buscarLocacaoCodigo(codigoLocacao);
-        locacoes.remove(locacaoAlterar);
-        locacoes.add(locacao);
+    public void atualizar(Integer id, Locacao locacao) {
+        locacaos.remove(locacao);
+        locacaos.add(locacao);
     }
 
+
     @Override
-    public Locacao buscarLocacaoCodigo(Integer codigoLocacao) {
-        for (Locacao l:locacoes) {
-            if(l.getLocacaoId().getValor().equals(codigoLocacao)){
-                return l;
+    public Locacao buscarPorId(Integer id) {
+        for (Locacao locacao : locacaos) {
+            if (locacao.getId().valor().equals(id)) {
+                return locacao;
             }
         }
-        throw new IllegalArgumentException("Locação não encontrada");
+        throw new RuntimeException("Locacao não encontrado");
     }
 
     @Override
-    public List<Locacao> listarLocacoes() {
-        return locacoes;
+    public List<Locacao> buscarTodos() {
+        return locacaos;
     }
 }
