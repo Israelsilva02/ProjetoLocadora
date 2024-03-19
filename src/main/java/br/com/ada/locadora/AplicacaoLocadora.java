@@ -1,12 +1,14 @@
 package br.com.ada.locadora;
 
 import br.com.ada.locadora.domain.cliente.*;
+import br.com.ada.locadora.domain.locacao.Locacao;
 import br.com.ada.locadora.domain.veiculo.TipoVeiculo;
 import br.com.ada.locadora.domain.veiculo.Veiculo;
 import br.com.ada.locadora.domain.veiculo.VeiculoGateway;
 import br.com.ada.locadora.infrastructure.ClienteGatewayImpl;
 import br.com.ada.locadora.infrastructure.VeiculoGatewayImpl;
 import br.com.ada.locadora.service.ClienteServico;
+import br.com.ada.locadora.service.LocacaoServico;
 import br.com.ada.locadora.service.VeiculoServico;
 
 
@@ -205,6 +207,7 @@ public class AplicacaoLocadora {
             System.out.println("1. Cadastrar Veiculo");
             System.out.println("2. Atualizar Veiculo");
             System.out.println("3. Listar Veiculo");
+            System.out.println("4. Buscar por Veiculo");
             System.out.println("0. Voltar ao menu");
             opcao2 = scanner.nextInt();
 
@@ -322,4 +325,112 @@ public class AplicacaoLocadora {
             System.out.println("Veículo não encontrado.");
         }
     }
+    private static void exibirMenuLocacao(Scanner scanner, ClienteServico clienteServico, VeiculoServico veiculoServico, LocacaoServico locacaoServico) {
+        System.out.println("********************************************");
+        System.out.println("1. Realizar Locação");
+        System.out.println("2. Devolver Veículo");
+        System.out.println("3. Listar Locações");
+        System.out.println("0. Voltar ao menu principal");
+        int opcao = scanner.nextInt();
+        do {
+            switch (opcao) {
+                case 1:
+                    realizarLocacao(scanner, clienteServico, veiculoServico, locacaoServico);
+                    break;
+                case 2:
+                    devolverVeiculo(scanner, locacaoServico);
+                    break;
+                case 3:
+                    listarLocacoes(locacaoServico);
+                    break;
+                case 0:
+                    System.out.println("Voltando ao menu principal...");
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        } while (opcao != 0);
+    }
+
+    private static void realizarLocacao(Scanner scanner, ClienteServico clienteServico, VeiculoServico veiculoServico, LocacaoServico locacaoServico) {
+        System.out.println("Digite o CPF ou CNPJ do cliente: ");
+        String cpfCnpj = scanner.next();
+        Identificador id = null;
+        try {
+            if (cpfCnpj.length() == 11) {
+                id = new CPF(cpfCnpj);
+            } else if (cpfCnpj.length() == 14) {
+                id = new CNPJ(cpfCnpj);
+            } else {
+                throw new IllegalArgumentException("CPF ou CNPJ inválido!");
+            }
+            Cliente clienteEncontrado = clienteServico.localizarCliente(id);
+            if (clienteEncontrado == null) {
+                System.out.println("Cliente não encontrado. Certifique-se de que o CPF/CNPJ está correto.");
+                return;
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+
+        System.out.println("Digite a placa do veículo: ");
+        String placa = scanner.next();
+        Veiculo veiculo = veiculoServico.localizarVeiculo(placa);
+
+        try {
+            Veiculo veiculoEncontrado = veiculoServico.localizarVeiculo(placa);
+            if (veiculoEncontrado != null) {
+                placa = veiculoEncontrado.getPlaca();
+            } else if (veiculoEncontrado == null) {
+                System.out.println("Veiculo não encontrado. Certifique-se de que a placa está correta.");
+                return;
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+
+        //   locacaoServico.incluirLocacao(locacaoServico);
+        System.out.println("Locação realizada com sucesso!");
+
+        System.out.println("Digite o numero de dias que irá alugar: ");
+        int quantidadeDias= scanner.nextInt();
+
+
+
+
+    }
+
+    private static void devolverVeiculo(Scanner scanner, LocacaoServico locacaoServico) {
+        System.out.println("Digite o código da locação: ");
+        int codigoLocacao = scanner.nextInt();
+
+        try {
+            locacaoServico.devolverVeiculo(codigoLocacao,locacaoServico);
+            System.out.println("Veículo devolvido com sucesso!");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void listarLocacoes(LocacaoServico locacaoServico) {
+        List<Locacao> locacoes = locacaoServico.listarLocacoes();
+        System.out.println("********************************************");
+        System.out.println("Listando todas as locações");
+        for (Locacao locacao : locacoes) {
+            System.out.println("Código da Locação: " + locacao.getLocacaoId().getValor());
+            System.out.println("Cliente: " + locacao.getCliente().getNome());
+            System.out.println("Veículo: " + locacao.getVeiculo().getMarca() + " - " + locacao.getVeiculo().getPlaca());
+            System.out.println("Data e hora de saída: " + locacao.getDataHoraSaida());
+            if (locacao.getDataHoraRetorno() != null) {
+                System.out.println("Data e hora de retorno: " + locacao.getDataHoraRetorno());
+            }
+            System.out.println("Local de devolução: " + locacao.getLocalDevolucao());
+            System.out.println("Valor da locação: " + locacao.calcularLocacao());
+            System.out.println("********************************************");
+        }
+    }
+}
+
 }
