@@ -34,7 +34,7 @@ public class AplicacaoLocadora {
             System.out.println(Cores.TEXT_PURPLE_BOLD
                     + "********************************************");
             System.out.println("********************************************");
-            System.out.println("*************** Locadora ***************");
+            System.out.println("*********** Locadora Xaropada ***************");
             System.out.println("********************************************");
             System.out.println("1. Clientes");
             System.out.println("2. Veículos");
@@ -191,7 +191,7 @@ public class AplicacaoLocadora {
         List<Cliente> clientes = clienteServico.listarClientes();
         for (Cliente cliente : clientes) {
             System.out.println("Tipo de Cliente: " + cliente.getTipo());
-            System.out.println("Identificador do Cliente: "+cliente.getId());
+            System.out.println("Identificador do Cliente: " + cliente.getId());
             System.out.println("Nome do Cliente: " + cliente.getNome());
             System.out.println("Email do Cliente: " + cliente.getEmail());
             System.out.println("********************************************");
@@ -199,14 +199,14 @@ public class AplicacaoLocadora {
     }
 
     private static void exibirMenuVeiculo() {
-        int opcao2=0;
+        int opcao2 = 0;
         do {
-        System.out.println("********************************************");
-        System.out.println("1. Cadastrar Veiculo");
-        System.out.println("2. Atualizar Veiculo");
-        System.out.println("3. Listar Veiculo");
-        System.out.println("0. Voltar ao menu");
-       opcao2 = scanner.nextInt();
+            System.out.println("********************************************");
+            System.out.println("1. Cadastrar Veiculo");
+            System.out.println("2. Atualizar Veiculo");
+            System.out.println("3. Listar Veiculo");
+            System.out.println("0. Voltar ao menu");
+            opcao2 = scanner.nextInt();
 
             switch (opcao2) {
                 case 1:
@@ -237,14 +237,14 @@ public class AplicacaoLocadora {
         System.out.println("Digite a marca do Veículo: ");
         String marca = scanner.next();
 
-        // Solicita ao usuário que selecione o tipo de veículo digitando um número
+
         System.out.println("Selecione o tipo do Veículo:");
         System.out.println("1. PEQUENO");
         System.out.println("2. MÉDIO");
         System.out.println("3. GRANDE");
         int opcaoTipoVeiculo = scanner.nextInt();
 
-        // Converte a opção de tipo de veículo em um enum TipoVeiculo correspondente
+
         TipoVeiculo tipoVeiculo;
         switch (opcaoTipoVeiculo) {
             case 1:
@@ -263,6 +263,7 @@ public class AplicacaoLocadora {
         veiculoServico.incluir(placa, marca, tipoVeiculo);
         System.out.println("Veículo cadastrado com sucesso!");
     }
+
     private static void atualizar(Scanner scanner, VeiculoServico veiculoServico) {
         System.out.println("Informe a placa do Veículo para alterar: ");
         String placaAlterar = scanner.next();
@@ -292,7 +293,7 @@ public class AplicacaoLocadora {
         }
 
 
-        veiculoServico.alterar(placaAlterar,novaMarca, novoTipoVeiculo);
+        veiculoServico.alterar(placaAlterar, novaMarca, novoTipoVeiculo);
         System.out.println("Veículo atualizado com sucesso!");
     }
 
