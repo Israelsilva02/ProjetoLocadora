@@ -15,11 +15,17 @@ public class ClienteGatewayImpl implements ClienteGateway {
         clientes.add(cliente);
     }
 
-    @Override
     public void atualizar(Cliente cliente) {
-        clientes.remove(cliente);
-        clientes.add(cliente);
+        for (int i = 0; i < clientes.size(); i++) {
+            if (clientes.get(i).id().equals(cliente.id())) {
+                clientes.set(i, cliente);
+                return; // Cliente encontrado e atualizado, encerra o método
+            }
+        }
+        // Se o cliente não for encontrado na lista, lança uma exceção
+        throw new RuntimeException("Cliente não encontrado");
     }
+
 
     @Override
     public Cliente buscarPorId(String id) {
