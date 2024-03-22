@@ -18,27 +18,31 @@ public class Locacao {
     private String localDevolucao;
     private int dias;
 
-    private Locacao(LocacaoID id, Cliente cliente) {
+    private Locacao(LocacaoID id, Cliente cliente, Veiculo veiculo) {
         this.id = id;
         this.cliente = cliente;
+        this.veiculo=veiculo;
     }
 
-    public static Locacao criar(Cliente cliente) {
+    public static Locacao criar(Cliente cliente,Veiculo veiculo) {
         LocacaoID id = LocacaoID.criar();
-        return new Locacao(id, cliente);
+        return new Locacao(id, cliente,veiculo);
     }
 
-    public void alugar(Veiculo veiculo, String localDevolucao, int dias) {
+    public void alugar(Veiculo veiculo, String localDevolucao) {
         this.veiculo = veiculo;
         veiculo.reservar();
         this.localDevolucao = localDevolucao;
-        this.dias = dias;
-        this.dataLocacao = LocalDateTime.now();
+        this.dataLocacao = LocalDateTime.of(2024, 3, 12, 10, 30);
     }
 
     public void devolver() {
         veiculo.liberar();
         this.dataDevolucao = LocalDateTime.now();
+        Duration duration = Duration.between(dataLocacao, dataDevolucao);
+        long diasAlugado = duration.toDays();
+        this.dias= (int) diasAlugado;
+        System.out.println("Veiculo devolvido");
     }
 
     public void localDevolucao(String localDevolucao) {
@@ -46,12 +50,15 @@ public class Locacao {
     }
 
     public BigDecimal calcularValor() {
-        Duration duration = Duration.between(dataLocacao, dataDevolucao);
-        long diasAlugado = duration.toDays();
+        if (dataDevolucao != null && dataLocacao != null) {
+            Duration duration = Duration.between(dataLocacao, dataDevolucao);
+            long diasAlugado = duration.toDays();
+            BigDecimal precoDiaria = veiculo.getTipoVeiculo().valor();
+            return precoDiaria.multiply(BigDecimal.valueOf(diasAlugado));
+        } else {
+            return BigDecimal.ZERO;
+        }
 
-        BigDecimal precoDiaria = veiculo.getTipoVeiculo().valor();
-
-        return precoDiaria.multiply(BigDecimal.valueOf(diasAlugado));
 
     }
 

@@ -28,7 +28,7 @@ public class VeiculoGatewayImpl implements VeiculoGateway {
                 return veiculo;
             }
         }
-        throw new RuntimeException("Veiculo não encontrado");
+       return null;
     }
 
 
