@@ -22,6 +22,8 @@ public class Main {
     private static ClienteGateway clienteGateway = new ClienteGatewayImpl();
     static LocacaoGateway locacaoGateway = new LocacaoGatewayImpl();
 
+    private static String tipocpfcnpj;
+
     public static void main(String[] args) {
 
         exibirMenu(scanner);
@@ -110,9 +112,11 @@ public class Main {
                 if (tipo.equalsIgnoreCase("PF")) {
                     System.out.println("Informe o CPF");
                     cpfCnpj = scanner.next();
+                    tipocpfcnpj = "CPF";
                 } else {
                     System.out.println("Informe o CNPJ");
                     cpfCnpj = scanner.next();
+                    tipocpfcnpj = "CNPJ";
                 }
 
                 Identificador identificador;
@@ -143,9 +147,7 @@ public class Main {
 
                 Cliente cliente = Cliente.criar(identificador, nome, email);
                 clienteGateway.salvar(cliente);
-                List<Cliente> clientes = clienteGateway.buscarTodos();
-                // clienteServico.incluir(identificador, nome, email, tipoPessoa);
-                System.out.println("Cliente cadastrado com sucesso com o identificador: " + identificador.valor());
+                System.out.println("Cliente cadastrado com sucesso com o " + tipocpfcnpj + ": " + identificador.valor());
                 break;
             }
         } catch (Exception e) {
@@ -165,8 +167,10 @@ public class Main {
         try {
             if (cpfCnpjAlterar.length() == 11) {
                 id = CPF.criar(cpfCnpjAlterar);
+                tipocpfcnpj = "CPF";
             } else if (cpfCnpjAlterar.length() == 14) {
                 id = CNPJ.criar(cpfCnpjAlterar);
+                tipocpfcnpj = "CNPJ";
             } else {
                 throw new IllegalArgumentException("CPF ou CNPJ inválido!");
             }
@@ -184,11 +188,13 @@ public class Main {
         String nomeAlterar = scanner.next();
         System.out.println("Informe o novo email do cliente:");
         String emailAlterar = scanner.next();
+
         clienteExistente.alterarNome(nomeAlterar);
         clienteExistente.alterarEmail(emailAlterar);
+
         clienteGateway.atualizar(clienteExistente);
 
-        System.out.println("Cliente alterado com sucesso!");
+        System.out.println("Cliente alterado com sucesso, com o " + tipocpfcnpj + ": " + clienteExistente.id().valor());
     }
 
     private static void listarCliente(ClienteGateway clienteGateway) {
@@ -239,48 +245,62 @@ public class Main {
     }
 
     private static void cadastrarVeiculo(Scanner scanner, VeiculoGateway veiculoGateway) {
-        System.out.println("Digite a placa do Veículo: ");
-        String placa = scanner.next();
-        System.out.println("Digite a marca do Veículo: ");
-        String marca = scanner.next();
+        while (true) {
+            System.out.println("Digite a placa do Veículo: ");
+            String placa = scanner.next();
+            if (placa.length() != 7) {
+                System.out.println("A placa deve ter 7 caracteres!");
+            } else {
+                try {
+                    System.out.println("Digite a marca do Veículo: ");
+                    String marca = scanner.next();
 
-        System.out.println("Selecione o tipo do Veículo:");
-        System.out.println("1. PEQUENO");
-        System.out.println("2. MÉDIO");
-        System.out.println("3. GRANDE");
-        int opcaoTipoVeiculo = scanner.nextInt();
+                    System.out.println("Selecione o tipo do Veículo:");
+                    System.out.println("1. PEQUENO");
+                    System.out.println("2. MÉDIO");
+                    System.out.println("3. GRANDE");
+                    int opcaoTipoVeiculo = scanner.nextInt();
+                    TipoVeiculo tipoVeiculo;
+                    switch (opcaoTipoVeiculo) {
+                        case 1:
+                            tipoVeiculo = TipoVeiculo.PEQUENO;
+                            break;
+                        case 2:
+                            tipoVeiculo = TipoVeiculo.MEDIO;
+                            break;
+                        case 3:
+                            tipoVeiculo = TipoVeiculo.GRANDE;
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Opção de tipo de veículo inválida!");
+                    }
+                    VeiculoID veiculoID = VeiculoID.criar(placa);
+                    Veiculo veiculo = Veiculo.criar(veiculoID, marca, tipoVeiculo);
+                    veiculoGateway.salvar(veiculo);
 
-        TipoVeiculo tipoVeiculo;
-        switch (opcaoTipoVeiculo) {
-            case 1:
-                tipoVeiculo = TipoVeiculo.PEQUENO;
-                break;
-            case 2:
-                tipoVeiculo = TipoVeiculo.MEDIO;
-                break;
-            case 3:
-                tipoVeiculo = TipoVeiculo.GRANDE;
-                break;
-            default:
-                throw new IllegalArgumentException("Opção de tipo de veículo inválida!");
+                    System.out.println("Veículo cadastrado com sucesso, com a placa: " + veiculoID.valor());
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
         }
-
-        VeiculoID veiculoID = VeiculoID.criar(placa);
-        Veiculo veiculo = Veiculo.criar(veiculoID, marca, tipoVeiculo);
-        veiculoGateway.salvar(veiculo);
-
-        System.out.println("Veículo cadastrado com sucesso!");
     }
 
     private static void atualizarVeiculo(Scanner scanner, VeiculoGateway veiculoGateway) {
-        System.out.println("Informe a placa do Veículo para alterar: ");
-        String placaAlterar = scanner.next();
 
-        Veiculo veiculoExistente = veiculoGateway.buscarPorId(placaAlterar);
-        if (veiculoExistente == null) {
-            System.out.println("Cliente não encontrado. Certifique-se de que o CPF/CNPJ está correto.");
-            return;
-        }
+                System.out.println("Informe a placa do Veículo para alterar: ");
+                String placaAlterar = scanner.next();
+
+                Veiculo veiculoExistente = veiculoGateway.buscarPorId(placaAlterar);
+                if (veiculoExistente == null) {
+                    System.out.println("Veículo não encontrado. Certifique-se de que a placa esteja correto.");
+                    return;
+                }
+
+
+
+
         System.out.println("Digite a nova marca do Veículo: ");
         String novaMarca = scanner.next();
 
@@ -308,8 +328,10 @@ public class Main {
         veiculoExistente.setMarca(novaMarca);
         veiculoExistente.setTipoVeiculo(novoTipoVeiculo);
         veiculoGateway.atualizar(veiculoExistente);
-        System.out.println("Veículo atualizado com sucesso!");
-    }
+        System.out.println("Veículo atualizado com sucesso, com a placa: "+veiculoExistente.getPlaca().valor());
+
+
+}
 
     private static void listarVeiculos(Scanner scanner, VeiculoGateway veiculoGateway) {
         System.out.println("********************************************");
@@ -376,6 +398,20 @@ public class Main {
                 System.out.println("Cliente não encontrado. Certifique-se de que o CPF/CNPJ está correto.");
                 return;
             }
+
+            List<Veiculo> veiculos = veiculoGateway.buscarTodos();
+
+            System.out.println("********************************************");
+            System.out.println("Listando todas os Veículos disponíveis");
+            System.out.println("********************************************");
+            for (Veiculo v : veiculos) {
+                if (v.isDisponivel()) {
+                    System.out.println("Placa: " + v.getPlaca().valor() + ", Marca: " + v.getMarca() + ", Tipo: " + v.getTipoVeiculo() + ", Preço da diaria: " + v.getTipoVeiculo().valor());
+
+                }
+                System.out.println();
+            }
+
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             return;
@@ -390,21 +426,16 @@ public class Main {
             return;
         }
 
-
         System.out.println("Digite local de Devolução: ");
         String local = scanner.next();
-//        System.out.println("Digite o numero de dias que irá alugar: ");
-//
-//        int quantidadeDias = scanner.nextInt();
-
 
         Locacao locacao = Locacao.criar(clienteExistente, veiculo);
-
         locacao.alugar(veiculo, local);
         locacaoGateway.salvar(locacao);
         System.out.println("Locação com o código " + locacao.getId().valor() + " com a placa " + veiculo.getPlaca().valor() + " alugado para o Cliente" +
                 " " + clienteExistente.id().valor());
     }
+
 
     private static void devolverVeiculo(Scanner scanner, LocacaoGateway locacaoGateway) {
         System.out.println("Digite o código da locação: ");
@@ -442,10 +473,11 @@ public class Main {
         } else {
             status = "Alugado";
         }
-        System.out.println(status);
+        System.out.println("Status atual do Veículo: "+status);
     }
 
     private static void listarLocacoes(LocacaoGateway locacaoGateway) {
+        String status;
         List<Locacao> locacoes = locacaoGateway.buscarTodos();
         System.out.println("********************************************");
         System.out.println("Listando todas as Locações");
@@ -459,7 +491,12 @@ public class Main {
             System.out.println("Data da Locação: " + locacao.getDataLocacao());
             System.out.println("Local da Devolução: " + locacao.getLocalDevolucao());
             System.out.println("Preço da diária: " + locacao.getVeiculo().getTipoVeiculo().valor());
-            System.out.println("Status do Veiculo: " + locacao.getVeiculo().isDisponivel());
+            if (locacao.getVeiculo().isDisponivel()) {
+                status = "Veículo Disponível";
+            } else {
+                status = "Veículo alugado";
+            }
+            System.out.println("Status do Veiculo: " + status);
             if (locacao.getDias() != 0) {
                 System.out.println("Quantidade de dias: " + locacao.getDias());
             }
