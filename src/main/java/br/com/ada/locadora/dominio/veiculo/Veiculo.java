@@ -45,6 +45,14 @@ public class Veiculo {
         return disponivel;
     }
 
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public void setTipoVeiculo(TipoVeiculo tipoVeiculo) {
+        this.tipoVeiculo = tipoVeiculo;
+    }
+
     @Override
     public String toString() {
         return "Veiculo{" +

@@ -11,6 +11,7 @@ public class VeiculoID extends Identificador<String> {
     }
 
     public static VeiculoID criar(String valor) {
+
         return new VeiculoID(valor);
     }
 

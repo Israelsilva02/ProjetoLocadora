@@ -31,7 +31,7 @@ public class Cliente {
 
 
 
-    public void altearNome(String novoNome) {
+    public void alterarNome(String novoNome) {
         this.nome = novoNome;
     }
 
@@ -43,15 +43,15 @@ public class Cliente {
         return id;
     }
 
-    public TipoPessoa tipo() {
+    public TipoPessoa getTipoPessoa() {
         return tipoPessoa;
     }
 
-    public String nome() {
+    public String getNome() {
         return nome;
     }
 
-    public String email() {
+    public String getEmail() {
         return email;
     }
 
