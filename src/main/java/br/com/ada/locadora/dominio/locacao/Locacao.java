@@ -33,8 +33,7 @@ public class Locacao {
         this.veiculo = veiculo;
         veiculo.reservar();
         this.localDevolucao = localDevolucao;
-        //this.dias = dias;
-        this.dataLocacao = LocalDateTime.of(2024, 3, 11, 10, 30);
+        this.dataLocacao = LocalDateTime.of(2024, 3, 12, 10, 30);
     }
 
     public void devolver() {
@@ -57,7 +56,7 @@ public class Locacao {
             BigDecimal precoDiaria = veiculo.getTipoVeiculo().valor();
             return precoDiaria.multiply(BigDecimal.valueOf(diasAlugado));
         } else {
-            return BigDecimal.ZERO; // Retorna zero se a data de devolução ou data de locação forem nulas
+            return BigDecimal.ZERO;
         }
 
 

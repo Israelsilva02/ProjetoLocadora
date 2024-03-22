@@ -23,6 +23,7 @@ public class Main {
     static LocacaoGateway locacaoGateway = new LocacaoGatewayImpl();
 
     private static String tipocpfcnpj;
+    private static String status;
 
     public static void main(String[] args) {
 
@@ -298,9 +299,6 @@ public class Main {
                     return;
                 }
 
-
-
-
         System.out.println("Digite a nova marca do Veículo: ");
         String novaMarca = scanner.next();
 
@@ -324,13 +322,10 @@ public class Main {
             default:
                 throw new IllegalArgumentException("Opção de tipo de veículo inválida!");
         }
-
         veiculoExistente.setMarca(novaMarca);
         veiculoExistente.setTipoVeiculo(novoTipoVeiculo);
         veiculoGateway.atualizar(veiculoExistente);
         System.out.println("Veículo atualizado com sucesso, com a placa: "+veiculoExistente.getPlaca().valor());
-
-
 }
 
     private static void listarVeiculos(Scanner scanner, VeiculoGateway veiculoGateway) {
@@ -342,6 +337,12 @@ public class Main {
             System.out.println("Tipo de Veículo: " + veiculo.getTipoVeiculo());
             System.out.println("Marca do Veículo: " + veiculo.getMarca());
             System.out.println("Placa do Veículo: " + veiculo.getPlaca().valor());
+            if (veiculo.isDisponivel()) {
+                status = "Veículo Disponível";
+            } else {
+                status = "Veículo alugado";
+            }
+            System.out.println("Status do Veiculo: " + status);
         }
     }
 
@@ -400,18 +401,21 @@ public class Main {
             }
 
             List<Veiculo> veiculos = veiculoGateway.buscarTodos();
-
+            boolean veiculosDisponiveis = false;
             System.out.println("********************************************");
             System.out.println("Listando todas os Veículos disponíveis");
             System.out.println("********************************************");
             for (Veiculo v : veiculos) {
                 if (v.isDisponivel()) {
+                    veiculosDisponiveis = true;
                     System.out.println("Placa: " + v.getPlaca().valor() + ", Marca: " + v.getMarca() + ", Tipo: " + v.getTipoVeiculo() + ", Preço da diaria: " + v.getTipoVeiculo().valor());
-
                 }
-                System.out.println();
             }
-
+            if (!veiculosDisponiveis) {
+                System.out.println("Não há veículos disponíveis!");
+                return;
+            }
+            System.out.println();
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             return;
@@ -477,8 +481,7 @@ public class Main {
     }
 
     private static void listarLocacoes(LocacaoGateway locacaoGateway) {
-        String status;
-        List<Locacao> locacoes = locacaoGateway.buscarTodos();
+                List<Locacao> locacoes = locacaoGateway.buscarTodos();
         System.out.println("********************************************");
         System.out.println("Listando todas as Locações");
         System.out.println("********************************************");
