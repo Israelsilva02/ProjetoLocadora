@@ -29,7 +29,7 @@
                     return locacao;
                 }
             }
-            throw new RuntimeException("Locacao não encontrado");
+            return null;
         }
 
         @Override
